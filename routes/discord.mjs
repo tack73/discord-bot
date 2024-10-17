@@ -14,7 +14,7 @@ router.get("/:channnel/:type/:rotationNum/:hour-:minute-:second", (req, res) => 
     const client = req.discordClient;
     const {channnel, type, rotationNum,hour,minute,second } = req.params;
     const now = new Date();
-    const sendTime = `${now.getFullYear()}/${now.getMonth()}/${now.getDate()} ${hour}:${minute}:${second}`
+    const sendTime = `${now.getFullYear()}/${now.getMonth()}/${now.getDate()} ${hour}時 ${minute}分 ${second}秒`;
     const channelID = channelIDs[channnel];
     let text = "";
     switch(type){
@@ -25,6 +25,7 @@ router.get("/:channnel/:type/:rotationNum/:hour-:minute-:second", (req, res) => 
         case "transfer" : text = `食缶移替 : ${rotationNum}ローテ目（送信時刻 : ${sendTime}）`; break;
         case "keep-cooling-start" : text = `保冷開始 : ${rotationNum}ローテ目（送信時刻 : ${sendTime}）`; break;
         case "keep-cooling-end" : text = `保冷終了 : ${rotationNum}ローテ目（送信時刻 : ${sendTime}）`; break;
+        default : text = "送信エラー";
     }
     client.channels.cache.get(channelID).send(text);
     res.json({msg: `${text} を送信しました`});
